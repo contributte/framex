@@ -4,6 +4,7 @@ use Contributte\FrameX\Application;
 use Contributte\FrameX\DI\FrameXExtension;
 use Contributte\Tester\Toolkit;
 use Contributte\Tester\Utils\ContainerBuilder;
+use Contributte\Tester\Utils\Liberator;
 use Contributte\Tester\Utils\Neonkit;
 use Nette\DI\Compiler;
 use Nette\DI\InvalidConfigurationException;
@@ -50,6 +51,29 @@ Toolkit::test(function (): void {
 
 	Assert::type(Application::class, $container->getByType(Application::class));
 	Assert::count(0, $container->findByTag(FrameXExtension::MIDDLEWARE_TAG));
+});
+
+// Middlewares
+Toolkit::test(function (): void {
+	$container = ContainerBuilder::of()
+		->withCompiler(function (Compiler $compiler): void {
+			$compiler->addExtension('framex', new FrameXExtension());
+			$compiler->addConfig([
+				'parameters' => [
+					'debugMode' => false,
+				],
+			]);
+			$compiler->addConfig(Neonkit::load(<<<'NEON'
+				framex:
+					routing:
+						- { path: test, method: get, controller: test }
+			NEON
+			));
+		})
+		->build();
+
+	$tracyMiddleware = $container->getService('framex.middleware.tracy');
+	Assert::false(Liberator::of($tracyMiddleware)->enable);
 });
 
 // No routing

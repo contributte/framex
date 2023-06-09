@@ -43,7 +43,7 @@ class FrameXExtension extends CompilerExtension
 			),
 			'routing' => Expect::array(
 				Expect::structure([
-					'method' => Expect::string()->required(),
+					'method' => Expect::anyOf('get', 'post', 'put', 'delete', 'options')->before(fn ($method) => strtolower($method))->required(),
 					'path' => Expect::string()->required(),
 					'controller' => $expectService,
 				])->required()
@@ -78,12 +78,16 @@ class FrameXExtension extends CompilerExtension
 			}
 		}
 
-		$builder->addDefinition($this->prefix('application'))
-			->setFactory(Application::class)
+		$applicationDef = $builder->addDefinition($this->prefix('application'));
+		$applicationDef->setFactory(Application::class)
 			->setArguments([
 				$this->prefix('@container'),
 				array_map(fn (string $service) => $builder->getDefinition($service), array_keys($builder->findByTag(self::MIDDLEWARE_TAG))),
 			]);
+
+		foreach ($config->routing as $route) {
+			$applicationDef->addSetup(strtolower($route['method']), [$route['path'], $route['controller']]);
+		}
 	}
 
 }
