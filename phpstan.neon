@@ -1,0 +1,28 @@
+includes:
+	- vendor/contributte/phpstan/phpstan.neon
+
+parameters:
+	level: 9
+	phpVersion: 80100
+
+	scanDirectories:
+		- src
+
+	fileExtensions:
+		- php
+		- phpt
+
+	paths:
+		- src
+		- .docs
+
+	ignoreErrors:
+		-
+			message: "#^Parameter \\#1 \\$service \\(class\\-string\\) of method Contributte\\\\FrameX\\\\Bridge\\\\NetteInteropContainer\\:\\:get\\(\\) should be contravariant with parameter \\$id \\(string\\) of method Psr\\\\Container\\\\ContainerInterface\\:\\:get\\(\\)$#"
+			count: 1
+			path: src/Bridge/NetteInteropContainer.php
+
+		-
+			message: "#^Parameter \\#1 \\$service \\(class\\-string\\) of method Contributte\\\\FrameX\\\\Bridge\\\\NetteInteropContainer\\:\\:has\\(\\) should be contravariant with parameter \\$id \\(string\\) of method Psr\\\\Container\\\\ContainerInterface\\:\\:has\\(\\)$#"
+			count: 1
+			path: src/Bridge/NetteInteropContainer.php
