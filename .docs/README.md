@@ -41,7 +41,7 @@ services:
 Full configuration could look like this:
 
 ```neon
-sentry:
+framex:
 	# List of middlewares (position mathers)
 	middlewares:
 		tracy: Contributte\FrameX\Middleware\TracyMiddleware(%debugMode%)
