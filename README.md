@@ -1,14 +1,14 @@
-![](https://heatbadger.now.sh/github/readme/contibutte/framex/)
+![](https://heatbadger.now.sh/github/readme/contributte/framex/)
 
 <p align=center>
-  <a href="https://github.com/contibutte/framex/actions"><img src="https://badgen.net/github/checks/contibutte/framex/master?cache=300"></a>
-  <a href="https://coveralls.io/r/contibutte/framex"><img src="https://badgen.net/coveralls/c/github/contibutte/framex?cache=300"></a>
-  <a href="https://packagist.org/packages/contibutte/framex"><img src="https://badgen.net/packagist/dm/contibutte/framex"></a>
-  <a href="https://packagist.org/packages/contibutte/framex"><img src="https://badgen.net/packagist/v/contibutte/framex"></a>
+  <a href="https://github.com/contributte/framex/actions"><img src="https://badgen.net/github/checks/contributte/framex/master?cache=300"></a>
+  <a href="https://coveralls.io/r/contributte/framex"><img src="https://badgen.net/coveralls/c/github/contributte/framex?cache=300"></a>
+  <a href="https://packagist.org/packages/contributte/framex"><img src="https://badgen.net/packagist/dm/contributte/framex"></a>
+  <a href="https://packagist.org/packages/contributte/framex"><img src="https://badgen.net/packagist/v/contributte/framex"></a>
 </p>
 <p align=center>
-  <a href="https://packagist.org/packages/contibutte/framex"><img src="https://badgen.net/packagist/php/contibutte/framex"></a>
-  <a href="https://github.com/contibutte/framex"><img src="https://badgen.net/github/license/contibutte/framex"></a>
+  <a href="https://packagist.org/packages/contributte/framex"><img src="https://badgen.net/packagist/php/contributte/framex"></a>
+  <a href="https://github.com/contributte/framex"><img src="https://badgen.net/github/license/contributte/framex"></a>
   <a href="https://bit.ly/ctteg"><img src="https://badgen.net/badge/support/gitter/cyan"></a>
   <a href="https://bit.ly/cttfo"><img src="https://badgen.net/badge/support/forum/yellow"></a>
   <a href="https://contributte.org/partners.html"><img src="https://badgen.net/badge/sponsor/donations/F96854"></a>
@@ -20,10 +20,10 @@ Website ðŸš€ <a href="https://contributte.org">contributte.org</a> | Contact ðŸ‘
 
 ## Usage
 
-To install latest version of `contibutte/framex` use [Composer](https://getcomposer.org).
+To install latest version of `contributte/framex` use [Composer](https://getcomposer.org).
 
 ```bash
-composer require contibutte/framex
+composer require contributte/framex
 ```
 
 ## Documentation
