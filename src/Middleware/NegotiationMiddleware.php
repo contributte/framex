@@ -15,6 +15,12 @@ use function RingCentral\Psr7\stream_for;
 class NegotiationMiddleware
 {
 
+	public function __construct(
+		private bool $catchExceptions = true
+	)
+	{
+	}
+
 	private function handleResponse(ServerRequestInterface $request, IResponse $apiResponse): ResponseInterface
 	{
 		$response = new Response();
@@ -24,10 +30,22 @@ class NegotiationMiddleware
 			$response = $response->withHeader($key, $value);
 		}
 
-		// Only pure response will be not converted to JSON.
-		$payload = $apiResponse instanceof PureResponse ? $apiResponse->getPayload() : Json::encode($apiResponse->getPayload());
+		if ($apiResponse instanceof DataResponse) {
+			$response = $response->withBody(stream_for(
+				Json::encode($apiResponse->getPayload())
+			));
 
-		return $response->withBody(stream_for($payload));
+		} elseif ($apiResponse instanceof ErrorResponse) {
+			$response = $response->withBody(stream_for((string) $apiResponse->getMessage()));
+
+		} else {
+			/** @var string $payload */
+			$payload = $apiResponse->getPayload();
+
+			$response = $response->withBody(stream_for($payload));
+		}
+
+		return $response;
 	}
 
 	private function handleError(ServerRequestInterface $request, Throwable $e): ResponseInterface
@@ -36,7 +54,11 @@ class NegotiationMiddleware
 		$response = $response->withStatus(Response::STATUS_INTERNAL_SERVER_ERROR);
 
 		$response = $response->withBody(stream_for(
-			Json::encode(['code' => Response::STATUS_INTERNAL_SERVER_ERROR, 'message' => $e->getMessage() !== '' ? $e->getMessage() : '{"error": "Internal server error"}'])
+			Json::encode([
+				'code' => Response::STATUS_INTERNAL_SERVER_ERROR,
+				'message' => $e->getMessage(),
+				'trace' => $e->getTrace(),
+			])
 		));
 
 		return $response;
@@ -47,17 +69,22 @@ class NegotiationMiddleware
 		try {
 			$apiResponse = $next($request);
 
-			// If middleware returns PSR-7 response, do not negotiate
+			// Bypass negotiation if response is already PSR-7
 			if ($apiResponse instanceof ResponseInterface) {
 				return $apiResponse;
 			}
 
+			// Double check if response is our IResponse
 			if (!($apiResponse instanceof IResponse)) {
-				throw new LogicalException(sprintf('Response from controller/middleware must be instanceof "%s"', IResponse::class));
+				throw new LogicalException(sprintf('Response from controller must be instanceof "%s", given "%s"', IResponse::class, get_class($apiResponse)));
 			}
 
 			return $this->handleResponse($request, $apiResponse);
 		} catch (Throwable $e) {
+			if (!$this->catchExceptions) {
+				Debugger::getStrategy()->handleException($e, true);
+			}
+
 			return $this->handleError($request, $e);
 		}
 	}
