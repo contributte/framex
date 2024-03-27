@@ -2,9 +2,11 @@
 
 namespace Contributte\FrameX\Middleware;
 
+use Contributte\FrameX\Debug\TracyDebugger;
 use Contributte\FrameX\Exception\LogicalException;
+use Contributte\FrameX\Http\DataResponse;
+use Contributte\FrameX\Http\ErrorResponse;
 use Contributte\FrameX\Http\IResponse;
-use Contributte\FrameX\Http\PureResponse;
 use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -76,13 +78,13 @@ class NegotiationMiddleware
 
 			// Double check if response is our IResponse
 			if (!($apiResponse instanceof IResponse)) {
-				throw new LogicalException(sprintf('Response from controller must be instanceof "%s", given "%s"', IResponse::class, get_class($apiResponse)));
+				throw new LogicalException(sprintf('Response from controller must be instanceof "%s", given "%s"', IResponse::class, $apiResponse::class));
 			}
 
 			return $this->handleResponse($request, $apiResponse);
 		} catch (Throwable $e) {
 			if (!$this->catchExceptions) {
-				Debugger::getStrategy()->handleException($e, true);
+				TracyDebugger::catch($e);
 			}
 
 			return $this->handleError($request, $e);
