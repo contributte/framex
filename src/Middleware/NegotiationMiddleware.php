@@ -27,6 +27,7 @@ class NegotiationMiddleware
 	{
 		$response = new Response();
 		$response = $response->withStatus($apiResponse->getStatusCode());
+		$response = $response->withHeader('Content-Type', 'application/json');
 
 		foreach ($apiResponse->getHeaders() as $key => $value) {
 			$response = $response->withHeader($key, $value);
@@ -43,7 +44,6 @@ class NegotiationMiddleware
 		} else {
 			/** @var string $payload */
 			$payload = $apiResponse->getPayload();
-
 			$response = $response->withBody(stream_for($payload));
 		}
 
@@ -54,7 +54,7 @@ class NegotiationMiddleware
 	{
 		$response = new Response();
 		$response = $response->withStatus(Response::STATUS_INTERNAL_SERVER_ERROR);
-
+		$response = $response->withHeader('Content-Type', 'application/json');
 		$response = $response->withBody(stream_for(
 			Json::encode([
 				'code' => Response::STATUS_INTERNAL_SERVER_ERROR,
