@@ -22,7 +22,7 @@ class FrameXExtension extends CompilerExtension
 	public const MIDDLEWARE_TAG = 'contributte.framex.middleware';
 
 	public const DEFAULT_MIDDLEWARES = [
-		'tracy' => [TracyMiddleware::class, ['%debugMode%']],
+		'tracy' => [TracyMiddleware::class, ['handleExceptions' => '%debugMode%']],
 		'cors' => [CorsMiddleware::class],
 	];
 
