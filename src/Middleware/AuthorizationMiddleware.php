@@ -34,6 +34,7 @@ class AuthorizationMiddleware
 	{
 		// Whitelist
 		$currentRoute = $request->getUri()->getPath();
+
 		if (in_array($currentRoute, $this->allowedRoutes, true) || in_array('*', $this->allowedRoutes, true)) {
 			return $next($request);
 		}

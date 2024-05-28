@@ -10,9 +10,9 @@ use Contributte\FrameX\Http\IResponse;
 use Nette\Utils\Json;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use React\Http\Io\BufferedBody;
 use React\Http\Message\Response;
 use Throwable;
-use function RingCentral\Psr7\stream_for;
 
 class NegotiationMiddleware
 {
@@ -34,17 +34,25 @@ class NegotiationMiddleware
 		}
 
 		if ($apiResponse instanceof DataResponse) {
-			$response = $response->withBody(stream_for(
-				Json::encode($apiResponse->getPayload())
-			));
-
+			$response = $response->withBody(
+				new BufferedBody(
+					Json::encode($apiResponse->getPayload())
+				)
+			);
 		} elseif ($apiResponse instanceof ErrorResponse) {
-			$response = $response->withBody(stream_for((string) $apiResponse->getMessage()));
-
+			$response = $response->withBody(
+				new BufferedBody(
+					(string) $apiResponse->getMessage()
+				)
+			);
 		} else {
 			/** @var string $payload */
 			$payload = $apiResponse->getPayload();
-			$response = $response->withBody(stream_for($payload));
+			$response = $response->withBody(
+				new BufferedBody(
+					$payload
+				)
+			);
 		}
 
 		return $response;
@@ -55,13 +63,15 @@ class NegotiationMiddleware
 		$response = new Response();
 		$response = $response->withStatus(Response::STATUS_INTERNAL_SERVER_ERROR);
 		$response = $response->withHeader('Content-Type', 'application/json');
-		$response = $response->withBody(stream_for(
-			Json::encode([
-				'code' => Response::STATUS_INTERNAL_SERVER_ERROR,
-				'message' => $e->getMessage(),
-				'trace' => $e->getTrace(),
-			])
-		));
+		$response = $response->withBody(
+			new BufferedBody(
+				Json::encode([
+					'code' => Response::STATUS_INTERNAL_SERVER_ERROR,
+					'message' => $e->getMessage(),
+					'trace' => $e->getTrace(),
+				])
+			)
+		);
 
 		return $response;
 	}

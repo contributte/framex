@@ -73,7 +73,8 @@ Toolkit::test(function (): void {
 		->build();
 
 	$tracyMiddleware = $container->getService('framex.middleware.tracy');
-	Assert::false(Liberator::of($tracyMiddleware)->enable);
+	Assert::false(Liberator::of($tracyMiddleware)->logExceptions);
+	Assert::false(Liberator::of($tracyMiddleware)->handleExceptions);
 });
 
 // No routing
