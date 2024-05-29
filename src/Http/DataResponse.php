@@ -5,14 +5,20 @@ namespace Contributte\FrameX\Http;
 use Nette\Utils\Validators;
 use stdClass;
 
+/** @phpstan-consistent-constructor */
 class DataResponse extends BaseResponse
 {
 
 	private mixed $data;
 
-	public static function create(): self
+	final public function __construct()
 	{
-		return new self();
+		// Constructor is disabled, use self::create()
+	}
+
+	public static function create(): static
+	{
+		return new static();
 	}
 
 	public function withDataScalar(string|int|float $data): self

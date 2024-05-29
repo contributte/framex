@@ -2,14 +2,20 @@
 
 namespace Contributte\FrameX\Http;
 
+/** @phpstan-consistent-constructor */
 class PureResponse extends BaseResponse
 {
 
 	private string $payload;
 
-	public static function create(): self
+	final public function __construct()
 	{
-		return new self();
+		// Constructor is disabled, use self::create()
+	}
+
+	public static function create(): static
+	{
+		return new static();
 	}
 
 	public function withPayload(string $payload): self

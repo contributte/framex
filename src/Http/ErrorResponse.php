@@ -2,6 +2,7 @@
 
 namespace Contributte\FrameX\Http;
 
+/** @phpstan-consistent-constructor */
 class ErrorResponse extends BaseResponse
 {
 
@@ -12,9 +13,14 @@ class ErrorResponse extends BaseResponse
 	/** @var mixed[] */
 	private array $validations = [];
 
-	public static function create(): self
+	public function __construct()
 	{
-		return new self();
+		// Constructor is disabled, use self::create()
+	}
+
+	public static function create(): static
+	{
+		return new static();
 	}
 
 	public function getErrorCode(): ?int

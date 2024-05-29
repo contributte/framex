@@ -14,7 +14,7 @@ abstract class EntityResponse extends BaseResponse
 		// Constructor is disabled, use self::create()
 	}
 
-	public static function create(): self
+	public static function create(): static
 	{
 		return new static();
 	}
