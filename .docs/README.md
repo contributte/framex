@@ -47,6 +47,7 @@ framex:
 		tracy: Contributte\FrameX\Middleware\TracyMiddleware(%debugMode%)
 		cors: Contributte\FrameX\Middleware\CorsMiddleware
 		negotiation: Contributte\FrameX\Middleware\NegotiationMiddleware
+		# negotiationv2: Contributte\FrameX\Middleware\NegotiationV2Middleware
 
 	# List of routes
 	routing:
