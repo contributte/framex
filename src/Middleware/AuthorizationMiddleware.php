@@ -39,8 +39,7 @@ class AuthorizationMiddleware
 			return $next($request);
 		}
 
-		/** @var string|array<mixed> $headerToken */
-		$headerToken = $request->getHeader('Authorization');
+		$headerToken = $request->getHeader('Authorization')[0] ?? null;
 
 		if (is_string($headerToken) === false) {
 			return ErrorResponse::create()->withErrorCode(401)->withMessage('Unauthorized');
