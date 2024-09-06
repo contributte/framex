@@ -25,7 +25,7 @@ Toolkit::test(function (): void {
 			$compiler->addConfig(Neonkit::load(<<<'NEON'
 				framex:
 					routing:
-						- { path: test, method: get, controller: test }
+						- { path: test, method: get, controller: Tests\Fixtures\TestController }
 			NEON
 			));
 		})
@@ -66,7 +66,7 @@ Toolkit::test(function (): void {
 			$compiler->addConfig(Neonkit::load(<<<'NEON'
 				framex:
 					routing:
-						- { path: test, method: get, controller: test }
+						- { path: test, method: get, controller: Tests\Fixtures\TestController }
 			NEON
 			));
 		})
