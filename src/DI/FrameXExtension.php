@@ -29,7 +29,7 @@ class FrameXExtension extends CompilerExtension
 	public function getConfigSchema(): Schema
 	{
 		$expectService = Expect::anyOf(
-			Expect::string()->required()->assert(fn ($input) => str_starts_with($input, '@') || class_exists($input) || interface_exists($input), 'handler is not valid'),
+			Expect::string()->required()->assert(fn ($input) => str_starts_with($input, '@') || class_exists($input) || interface_exists($input), 'not a valid service definition'),
 			Expect::type(Statement::class),
 		)->required();
 
@@ -46,6 +46,7 @@ class FrameXExtension extends CompilerExtension
 					'method' => Expect::anyOf('get', 'post', 'put', 'delete', 'options')->before(fn ($method) => strtolower($method))->required(),
 					'path' => Expect::string()->required(),
 					'controller' => $expectService,
+					'middleware' => Expect::arrayOf($expectService),
 				])->required()
 			)->required(),
 		]);
@@ -86,7 +87,7 @@ class FrameXExtension extends CompilerExtension
 			]);
 
 		foreach ($config->routing as $route) {
-			$applicationDef->addSetup(strtolower($route->method), [$route->path, $route->controller]);
+			$applicationDef->addSetup(strtolower($route->method), [$route->path, $route->controller, $route->middleware]);
 		}
 	}
 

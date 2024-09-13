@@ -24,42 +24,47 @@ class Application
 
 	/**
 	 * @param class-string $handler
+	 * @param array<callable|class-string> $middleware
 	 */
-	public function get(string $route, string $handler): void
+	public function get(string $route, string $handler, array $middleware = []): void
 	{
-		$this->app->get($route, $handler);
+		$this->app->get($route, ...[...$middleware, $handler]);
 	}
 
 	/**
 	 * @param class-string $handler
+	 * @param array<callable|class-string> $middleware
 	 */
-	public function post(string $route, string $handler): void
+	public function post(string $route, string $handler, array $middleware = []): void
 	{
-		$this->app->post($route, $handler);
+		$this->app->post($route, ...[...$middleware, $handler]);
 	}
 
 	/**
 	 * @param class-string $handler
+	 * @param array<callable|class-string> $middleware
 	 */
-	public function put(string $route, string $handler): void
+	public function put(string $route, string $handler, array $middleware = []): void
 	{
-		$this->app->put($route, $handler);
+		$this->app->put($route, ...[...$middleware, $handler]);
 	}
 
 	/**
 	 * @param class-string $handler
+	 * @param array<callable|class-string> $middleware
 	 */
-	public function delete(string $route, string $handler): void
+	public function delete(string $route, string $handler, array $middleware = []): void
 	{
-		$this->app->delete($route, $handler);
+		$this->app->delete($route, ...[...$middleware, $handler]);
 	}
 
 	/**
 	 * @param class-string $handler
+	 * @param array<callable|class-string> $middleware
 	 */
-	public function options(string $route, string $handler): void
+	public function options(string $route, string $handler, array $middleware = []): void
 	{
-		$this->app->options($route, $handler);
+		$this->app->options($route, ...[...$middleware, $handler]);
 	}
 
 	public function run(): void

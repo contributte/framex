@@ -23,9 +23,11 @@ Toolkit::test(function (): void {
 					middlewares: []
 					routing:
 						- { path: /test, method: get, controller: Tests\Fixtures\TestController }
+						- { path: /secured, method: get, controller: Tests\Fixtures\TestController, middleware: [Tests\Fixtures\TestMiddleware] }
 
 				services:
 					- Tests\Fixtures\TestController
+					- Tests\Fixtures\TestMiddleware
 			NEON
 			));
 		})
@@ -57,4 +59,12 @@ Toolkit::test(function (): void {
 
 	Assert::equal(405, $sapi->response->getStatusCode());
 	Assert::match('%A%Error 405: Method Not Allowed%A%', $sapi->response->getBody()->getContents());
+
+	// Send to route secured by middleware
+	$sapi = TestHandler::of(new ServerRequest('GET', '/secured'));
+	Liberator::of(Liberator::of($app)->app)->sapi = $sapi;
+	$app->run();
+
+	Assert::equal(401, $sapi->response->getStatusCode());
+	Assert::match('secured', $sapi->response->getBody()->getContents());
 });
