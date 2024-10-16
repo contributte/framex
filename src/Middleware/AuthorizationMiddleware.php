@@ -3,6 +3,7 @@
 namespace Contributte\FrameX\Middleware;
 
 use Contributte\FrameX\Http\ErrorResponse;
+use Fig\Http\Message\StatusCodeInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationMiddleware
@@ -42,14 +43,14 @@ class AuthorizationMiddleware
 		$headerToken = $request->getHeader('Authorization')[0] ?? null;
 
 		if (is_string($headerToken) === false) {
-			return ErrorResponse::create()->withErrorCode(401)->withMessage('Unauthorized');
+			return ErrorResponse::create()->withStatusCode(StatusCodeInterface::STATUS_UNAUTHORIZED)->withMessage('Unauthorized');
 		}
 
 		/** @var string|false|null $token */
 		$token = explode(' ', $headerToken)[1] ?? null;
 
 		if ($token === false || $token === null) {
-			return ErrorResponse::create()->withErrorCode(403)->withMessage('Missing token');
+			return ErrorResponse::create()->withStatusCode(StatusCodeInterface::STATUS_FORBIDDEN)->withMessage('Missing token');
 		}
 
 		// using predefined api tokens instead of ldap/authorization
@@ -57,7 +58,7 @@ class AuthorizationMiddleware
 			return $next($request);
 		}
 
-		return ErrorResponse::create()->withErrorCode(403)->withMessage('Bad auth token');
+		return ErrorResponse::create()->withStatusCode(StatusCodeInterface::STATUS_FORBIDDEN)->withMessage('Bad auth token');
 	}
 
 }
