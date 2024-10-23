@@ -35,9 +35,13 @@ class NegotiationV2Middleware
 		}
 
 		if ($apiResponse instanceof PureResponse) {
-			return $response->withBody(
-				new BufferedBody($apiResponse->getPayload())
-			);
+			if ($apiResponse->getPayload() !== null) {
+				return $response->withBody(
+					new BufferedBody($apiResponse->getPayload())
+				);
+			}
+
+			return $response;
 		}
 
 		if ($apiResponse instanceof EntityListResponse) {

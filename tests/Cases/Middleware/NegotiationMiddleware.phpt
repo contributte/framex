@@ -21,4 +21,5 @@ Toolkit::test(function (): void {
 
 	Assert::type(Response::class, $return);
 	Assert::equal(['Content-Type' => ['application/json']], $return->getHeaders());
+	Assert::equal('test', $return->getBody()->getContents());
 });
