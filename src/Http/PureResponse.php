@@ -6,7 +6,7 @@ namespace Contributte\FrameX\Http;
 class PureResponse extends BaseResponse
 {
 
-	private string $payload;
+	private ?string $payload = null;
 
 	final public function __construct()
 	{
@@ -18,14 +18,14 @@ class PureResponse extends BaseResponse
 		return new static();
 	}
 
-	public function withPayload(string $payload): self
+	public function withPayload(?string $payload): self
 	{
 		$this->payload = $payload;
 
 		return $this;
 	}
 
-	public function getPayload(): string
+	public function getPayload(): ?string
 	{
 		return $this->payload;
 	}
