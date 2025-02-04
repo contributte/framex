@@ -23,10 +23,7 @@ abstract class BaseResponse implements IResponse
 		return $this->headers;
 	}
 
-	/**
-	 * @return static
-	 */
-	public function withStatusCode(int $code): self
+	public function withStatusCode(int $code): static
 	{
 		$this->statusCode = $code;
 
@@ -36,7 +33,7 @@ abstract class BaseResponse implements IResponse
 	/**
 	 * @param array<string, string> $headers
 	 */
-	public function withHeaders(array $headers): self
+	public function withHeaders(array $headers): static
 	{
 		$this->headers = $headers;
 
