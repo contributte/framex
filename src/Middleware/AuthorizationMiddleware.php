@@ -46,10 +46,10 @@ class AuthorizationMiddleware
 			return ErrorResponse::create()->withStatusCode(StatusCodeInterface::STATUS_UNAUTHORIZED)->withMessage('Unauthorized');
 		}
 
-		/** @var string|false|null $token */
+		/** @var string|null $token */
 		$token = explode(' ', $headerToken)[1] ?? null;
 
-		if ($token === false || $token === null) {
+		if ($token === null) {
 			return ErrorResponse::create()->withStatusCode(StatusCodeInterface::STATUS_FORBIDDEN)->withMessage('Missing token');
 		}
 
