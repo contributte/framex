@@ -3,13 +3,13 @@
 namespace Contributte\FrameX\Http;
 
 /**
- * @phpstan-consistent-constructor
+ * @template T
  */
 abstract class EntityListResponse extends BaseResponse
 {
 
-	/** @var mixed[] */
-	protected array $entities = [];
+	/** @var iterable<T> */
+	protected iterable $entities = [];
 
 	protected ?int $count = null;
 
@@ -22,23 +22,29 @@ abstract class EntityListResponse extends BaseResponse
 		// Constructor is disabled, use self::create()
 	}
 
+	/**
+	 * @return static<T>
+	 */
 	public static function create(): static
 	{
-		return new static();
+		/** @var static<T> $self */
+		$self = new static();
+
+		return $self;
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return iterable<T>
 	 */
-	public function getEntities(): array
+	public function getEntities(): iterable
 	{
 		return $this->entities;
 	}
 
 	/**
-	 * @return mixed[]
+	 * @return iterable<T>
 	 */
-	public function getPayload(): array
+	public function getPayload(): iterable
 	{
 		return $this->getEntities();
 	}

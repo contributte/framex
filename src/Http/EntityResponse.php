@@ -2,27 +2,19 @@
 
 namespace Contributte\FrameX\Http;
 
-/** @phpstan-consistent-constructor */
+/**
+ * @template T
+ */
 abstract class EntityResponse extends BaseResponse
 {
 
-	/** @var mixed[] */
-	protected array $payload = [];
-
-	final public function __construct()
-	{
-		// Constructor is disabled, use self::create()
-	}
-
-	public static function create(): static
-	{
-		return new static();
-	}
+	/** @var T */
+	protected mixed $payload;
 
 	/**
-	 * @return mixed[]
+	 * @return T
 	 */
-	public function getPayload(): array
+	public function getPayload(): mixed
 	{
 		return $this->payload;
 	}
