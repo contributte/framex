@@ -8,7 +8,7 @@
 # Tests
 /tests/tmp
 /coverage.*
-*.actual
-*.expected
-*.log
-*.html
+/tests/**/*.log
+/tests/**/*.html
+/tests/**/*.expected
+/tests/**/*.actual
